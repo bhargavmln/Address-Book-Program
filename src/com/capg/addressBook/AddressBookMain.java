@@ -1,6 +1,7 @@
 package com.capg.addressBook;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class AddressBookMain {
 
@@ -72,20 +73,46 @@ public class AddressBookMain {
 		contactArray.remove(obj);
 	}
 
-	public static void main(String args[]) {
+	public void maintainAddressBook() {
+		boolean exitFlag = true;
+		while (exitFlag) {
+			System.out.println("Enter your choice:");
+			System.out.println("1. Add Contact Details");
+			System.out.println("2. Edit Contact Details");
+			System.out.println("3. Delete Contact Details");
+			System.out.println("4. Exit");
 
-		AddressBookMain contact = new AddressBookMain();
-		while(true)
-		{
-		System.out.println("Do You Want to Add Contact(Y/N)");
-		char choice=sc.next().charAt(0);
-			if(choice=='Y')
-			{
-			contact.addContact();
-			contact.printContact();
+			int choice = sc.nextInt();
+			switch (choice) {
+			case 1:
+				addContact();
+				break;
+			case 2:
+				if (contactArray.size() == 0)
+					System.out.println("Plese Enter contacts");
+				else
+					editContact();
+				break;
+			case 3:
+				if (contactArray.size() == 0)
+					System.out.println("Plese Enter contacts");
+				else
+					deleteContact();
+				break;
+			case 4:
+				System.out.println("Exit");
+				exitFlag = false;
+				break;
+			default :
+				System.out.println("Choose correct option");
 			}
-			else
-			break;
 		}
+	}
+	
+	public boolean checkDuplicateName(Contact contact)
+	 {
+	Predicate<Contact> compareName = n-> n.equals(contact);
+		boolean value = contactArray.stream().anyMatch(compareName);
+		return value;	
 	}
 }
